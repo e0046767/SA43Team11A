@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SA43Team11AModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BookCopy">
+    <Key>
+      <PropertyRef Name="ISBN" />
+    </Key>
+    <Property Name="ISBN" Type="Int32" Nullable="false" />
+    <Property Name="BookID" Type="Int32" Nullable="false" />
+    <Property Name="IsRef" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BookStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Book" Relationship="Self.FK__BookCopie__BookI__33D4B598" FromRole="BookCopies" ToRole="Books" />
+    <NavigationProperty Name="LoanTransactionLines" Relationship="Self.FK__LoanTransa__ISBN__38996AB5" FromRole="BookCopies" ToRole="LoanTransactionLines" />
+  </EntityType>
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="BookID" />
+    </Key>
+    <Property Name="BookID" Type="Int32" Nullable="false" />
+    <Property Name="BookName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Author" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="PublicationYear" Type="DateTime" Precision="0" />
+    <Property Name="CategoryCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="BookCopies" Relationship="Self.FK__BookCopie__BookI__33D4B598" FromRole="Books" ToRole="BookCopies" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__Books__CategoryC__267ABA7A" FromRole="Books" ToRole="Categories" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryCode" />
+    </Key>
+    <Property Name="CategoryCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CategoryName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LocationCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Books" Relationship="Self.FK__Books__CategoryC__267ABA7A" FromRole="Categories" ToRole="Books" />
+    <NavigationProperty Name="Location" Relationship="Self.FK__Categorie__Locat__1273C1CD" FromRole="Categories" ToRole="Locations" />
+  </EntityType>
+  <EntityType Name="LoanTransactionLine">
+    <Key>
+      <PropertyRef Name="TransactionLineID" />
+    </Key>
+    <Property Name="TransactionLineID" Type="Int32" Nullable="false" />
+    <Property Name="TransactionID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ISBN" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BookCopy" Relationship="Self.FK__LoanTransa__ISBN__38996AB5" FromRole="LoanTransactionLines" ToRole="BookCopies" />
+  </EntityType>
+  <EntityType Name="LoanTransaction">
+    <Key>
+      <PropertyRef Name="TransactionID" />
+    </Key>
+    <Property Name="TransactionID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MemberID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DateOFIssue" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="DateDue" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="DateOfReturn" Type="DateTime" Precision="0" />
+    <Property Name="Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Member" Relationship="Self.FK__LoanTrans__Membe__2E1BDC42" FromRole="LoanTransactions" ToRole="Members" />
+  </EntityType>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="LocationCode" />
+    </Key>
+    <Property Name="LocationCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Categories" Relationship="Self.FK__Categorie__Locat__1273C1CD" FromRole="Locations" ToRole="Categories" />
+  </EntityType>
+  <EntityType Name="Member">
+    <Key>
+      <PropertyRef Name="MemberID" />
+    </Key>
+    <Property Name="MemberID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MemberName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Gender" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DOB" Type="DateTime" Precision="0" />
+    <Property Name="ICNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContactNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="E_Mail" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="LoanTransactions" Relationship="Self.FK__LoanTrans__Membe__2E1BDC42" FromRole="Members" ToRole="LoanTransactions" />
+  </EntityType>
+  <EntityType Name="UserAccount">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserPassword" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__BookCopie__BookI__33D4B598">
+    <End Role="Books" Type="Self.Book" Multiplicity="1" />
+    <End Role="BookCopies" Type="Self.BookCopy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="BookID" />
+      </Principal>
+      <Dependent Role="BookCopies">
+        <PropertyRef Name="BookID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__LoanTransa__ISBN__38996AB5">
+    <End Role="BookCopies" Type="Self.BookCopy" Multiplicity="1" />
+    <End Role="LoanTransactionLines" Type="Self.LoanTransactionLine" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BookCopies">
+        <PropertyRef Name="ISBN" />
+      </Principal>
+      <Dependent Role="LoanTransactionLines">
+        <PropertyRef Name="ISBN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Books__CategoryC__267ABA7A">
+    <End Role="Categories" Type="Self.Category" Multiplicity="1" />
+    <End Role="Books" Type="Self.Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryCode" />
+      </Principal>
+      <Dependent Role="Books">
+        <PropertyRef Name="CategoryCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Categorie__Locat__1273C1CD">
+    <End Role="Locations" Type="Self.Location" Multiplicity="1" />
+    <End Role="Categories" Type="Self.Category" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="LocationCode" />
+      </Principal>
+      <Dependent Role="Categories">
+        <PropertyRef Name="LocationCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__LoanTrans__Membe__2E1BDC42">
+    <End Role="Members" Type="Self.Member" Multiplicity="1" />
+    <End Role="LoanTransactions" Type="Self.LoanTransaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Members">
+        <PropertyRef Name="MemberID" />
+      </Principal>
+      <Dependent Role="LoanTransactions">
+        <PropertyRef Name="MemberID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SA43Team11AEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BookCopies" EntityType="Self.BookCopy" />
+    <EntitySet Name="Books" EntityType="Self.Book" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="LoanTransactionLines" EntityType="Self.LoanTransactionLine" />
+    <EntitySet Name="LoanTransactions" EntityType="Self.LoanTransaction" />
+    <EntitySet Name="Locations" EntityType="Self.Location" />
+    <EntitySet Name="Members" EntityType="Self.Member" />
+    <EntitySet Name="UserAccounts" EntityType="Self.UserAccount" />
+    <AssociationSet Name="FK__BookCopie__BookI__33D4B598" Association="Self.FK__BookCopie__BookI__33D4B598">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="BookCopies" EntitySet="BookCopies" />
+    </AssociationSet>
+    <AssociationSet Name="FK__LoanTransa__ISBN__38996AB5" Association="Self.FK__LoanTransa__ISBN__38996AB5">
+      <End Role="BookCopies" EntitySet="BookCopies" />
+      <End Role="LoanTransactionLines" EntitySet="LoanTransactionLines" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Books__CategoryC__267ABA7A" Association="Self.FK__Books__CategoryC__267ABA7A">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Books" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Categorie__Locat__1273C1CD" Association="Self.FK__Categorie__Locat__1273C1CD">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Categories" EntitySet="Categories" />
+    </AssociationSet>
+    <AssociationSet Name="FK__LoanTrans__Membe__2E1BDC42" Association="Self.FK__LoanTrans__Membe__2E1BDC42">
+      <End Role="Members" EntitySet="Members" />
+      <End Role="LoanTransactions" EntitySet="LoanTransactions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
